@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { orderSchema } from "@/lib/validation";
+import { sendOrderNotifications } from "@/lib/email";
 
 export async function POST(req: Request) {
   const session = await getSession();
@@ -16,7 +17,11 @@ export async function POST(req: Request) {
       if (!p || p.stock < item.quantity) return NextResponse.json({ error: "One or more items are unavailable." }, { status: 400 });
       total += p.price * item.quantity;
     }
-    const order = await db.order.create({ data: { userId: session.id, total, paymentMethod: data.paymentMethod, shippingName: data.shippingName, shippingPhone: data.shippingPhone, shippingEmail: data.shippingEmail, address: data.address, city: data.city, state: data.state, items: { create: data.items.map(i => ({ productId: i.productId, quantity: i.quantity, price: map.get(i.productId)!.price })) } } });
+    const order = await db.order.create({
+      data: { userId: session.id, total, paymentMethod: data.paymentMethod, shippingName: data.shippingName, shippingPhone: data.shippingPhone, shippingEmail: data.shippingEmail, address: data.address, city: data.city, state: data.state, items: { create: data.items.map(i => ({ productId: i.productId, quantity: i.quantity, price: map.get(i.productId)!.price })) } },
+      include: { items: { include: { product: { select: { name: true } } } } }
+    });
+    await sendOrderNotifications(order).catch(() => false);
     return NextResponse.json({ orderId: order.id });
   } catch { return NextResponse.json({ error: "Invalid order data." }, { status: 400 }); }
 }
