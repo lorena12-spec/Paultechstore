@@ -15,7 +15,7 @@ const products = [
 ] as const;
 
 async function main() {
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@paultechstore.com";
+  const adminEmail = process.env.ADMIN_EMAIL || "paultechstores@gmail.com";
   const adminPassword = process.env.ADMIN_PASSWORD || "ChangeMeImmediately123!";
   const hash = await bcrypt.hash(adminPassword, 12);
 
