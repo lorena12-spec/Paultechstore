@@ -1,6 +1,11 @@
 import { naira } from "@/lib/utils";
 
-const sender = () => process.env.AUTH_EMAIL_FROM || "PaulTech Store <orders@paultechstores.com.ng>";
+function sender() {
+  const configuredSender = process.env.AUTH_EMAIL_FROM?.trim();
+  if (!configuredSender) return "PaulTech Store <orders@paultechstores.com.ng>";
+  if (!configuredSender.includes("@")) return `PaulTech Store <support@${configuredSender}>`;
+  return configuredSender;
+}
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character] || character);
