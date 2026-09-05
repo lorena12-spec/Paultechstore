@@ -21,7 +21,7 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: adminEmail },
-    update: { passwordHash: hash, role: Role.ADMIN },
+    update: { role: Role.ADMIN },
     create: { name: "PaulTech Admin", email: adminEmail, passwordHash: hash, role: Role.ADMIN }
   });
 
@@ -40,7 +40,7 @@ async function main() {
   for (const [name, brand, price, slug, category, description, stock, featured] of products) {
     await prisma.product.upsert({
       where: { slug },
-      update: { price, stock, featured },
+      update: {},
       create: {
         name, brand, price, slug, description, stock, featured,
         categoryId: categoryMap[category],

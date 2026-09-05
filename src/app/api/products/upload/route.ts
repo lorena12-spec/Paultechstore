@@ -23,7 +23,7 @@ if (hasCloudinaryConfig) {
 }
 
 function getCloudinaryErrorMessage() {
-  return "Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in Render.";
+  return "Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in Netlify.";
 }
 
 export async function POST(req: Request) {

@@ -5,7 +5,7 @@ Full-stack e-commerce starter for PaulTech Store, focused on iPhones, iPads, Sam
 ## Stack
 - Next.js App Router + TypeScript
 - Prisma ORM
-- SQLite for local development; switch `DATABASE_URL` to PostgreSQL for production
+- PostgreSQL via Prisma
 - JWT session cookie using `jose`
 - bcrypt password hashing
 - Zod validation
@@ -13,7 +13,7 @@ Full-stack e-commerce starter for PaulTech Store, focused on iPhones, iPads, Sam
 
 ## Run locally
 1. Install Node.js 20+.
-2. Copy `.env.example` to `.env`.
+2. Set `DATABASE_URL` to a PostgreSQL database in `.env`.
 3. Run `npm install`.
 4. Run `npx prisma generate`.
 5. Run `npm run db:push`.
@@ -40,4 +40,4 @@ In Resend, verify the sending domain (recommended) or sender identity used by `A
 The project currently has no external authentication provider with email-verification support, so registration email verification is not enabled. Existing accounts remain compatible, and all new passwords must contain at least 8 characters, including uppercase, lowercase, and a number.
 
 ## Production notes
-Use PostgreSQL, HTTPS, a strong AUTH_SECRET, real image storage, backups, monitoring and a reviewed payment/webhook implementation before taking live payments. Never commit `.env`.
+Use a managed PostgreSQL database, HTTPS, a strong AUTH_SECRET, Cloudinary image storage, backups, monitoring and a reviewed payment/webhook implementation before taking live payments. Netlify hosts the full-stack Next.js application; never commit `.env`.

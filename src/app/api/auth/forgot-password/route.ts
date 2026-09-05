@@ -6,6 +6,22 @@ import { sendEmail } from "@/lib/email";
 
 const responseMessage = "If an account matches that email, password recovery instructions are ready.";
 
+function getSiteUrl(req: Request) {
+  const requestOrigin = new URL(req.url).origin;
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+  if (!configuredUrl) return requestOrigin;
+
+  try {
+    const parsedUrl = new URL(configuredUrl);
+    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") return requestOrigin;
+    if (process.env.NODE_ENV === "production" && ["localhost", "127.0.0.1", "0.0.0.0"].includes(parsedUrl.hostname)) return requestOrigin;
+    return parsedUrl.origin;
+  } catch {
+    return requestOrigin;
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const { email } = forgotPasswordSchema.parse(await req.json());
@@ -19,7 +35,7 @@ export async function POST(req: Request) {
       data: { userId: user.id, tokenHash, expiresAt: new Date(Date.now() + 60 * 60 * 1000) }
     });
 
-    const resetUrl = `${process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin}/reset-password?token=${rawToken}`;
+    const resetUrl = new URL(`/reset-password?token=${encodeURIComponent(rawToken)}`, getSiteUrl(req)).toString();
     const htmlEmail = `
       <!DOCTYPE html>
       <html>
