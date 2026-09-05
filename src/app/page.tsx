@@ -2,6 +2,8 @@ import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import { db } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const products = await db.product.findMany({ where: { featured: true }, take: 8, orderBy: { createdAt: "desc" } });
   return (
