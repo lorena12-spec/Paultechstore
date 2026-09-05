@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getPrimaryProductImage } from "@/lib/product-images";
 import { naira } from "@/lib/utils";
 import { useCart } from "./cart/CartProvider";
 
@@ -11,7 +12,7 @@ export default function ProductCard({ product }: { product: any }) {
   const router = useRouter();
   const [checkingAccount, setCheckingAccount] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
-  const image = JSON.parse(product.images)[0];
+  const image = getPrimaryProductImage(product.images) ?? "/images/placeholder-product.jpg";
 
   useEffect(() => {
     fetch("/api/me", { cache: "no-store" }).then(response => response.json()).then(data => setLoggedIn(Boolean(data.session))).catch(() => setLoggedIn(false)).finally(() => setCheckingAccount(false));
