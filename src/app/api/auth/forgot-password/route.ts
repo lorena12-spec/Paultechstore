@@ -10,12 +10,13 @@ function getSiteUrl(req: Request) {
   const requestOrigin = new URL(req.url).origin;
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 
+  // In production, use the host that served the request so deploy-preview URLs cannot leak into emails.
+  if (process.env.NODE_ENV === "production") return requestOrigin;
   if (!configuredUrl) return requestOrigin;
 
   try {
     const parsedUrl = new URL(configuredUrl);
     if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") return requestOrigin;
-    if (process.env.NODE_ENV === "production" && ["localhost", "127.0.0.1", "0.0.0.0"].includes(parsedUrl.hostname)) return requestOrigin;
     return parsedUrl.origin;
   } catch {
     return requestOrigin;
