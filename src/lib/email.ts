@@ -70,9 +70,16 @@ function orderDetails(order: OrderEmail) {
 export async function sendOrderNotifications(order: OrderEmail) {
   const details = orderDetails(order);
   const messages = [
-    sendEmail(order.shippingEmail, `PaulTech Store order confirmation #${details.orderNumber}`, `Hi ${order.shippingName},\n\nThank you for your order.\n\n${details.text}\n\nWe will contact you with further updates.`, `<p>Hi ${escapeHtml(order.shippingName)},</p><p>Thank you for your order.</p>${details.html}<p>We will contact you with further updates.</p>`)
+    sendEmail(order.shippingEmail, `PaulTech Store order confirmation #${details.orderNumber}`, `Hi ${order.shippingName},\n\nThank you for your order.\n\n${details.text}\n\nWe will contact you with shipping details soon.\n\nThank you for shopping with PaulTech Store!`, details.html)
   ];
   if (process.env.ADMIN_EMAIL) messages.push(sendEmail(process.env.ADMIN_EMAIL, `New PaulTech Store order #${details.orderNumber}`, details.text, details.html));
   const results = await Promise.allSettled(messages);
   return results.every(result => result.status === "fulfilled" && result.value);
+}
+
+export async function sendWelcomeEmail(name: string, email: string) {
+  const subject = "Welcome to PaulTech Store!";
+  const text = `Hi ${name},\n\nWelcome to PaulTech Store! Your account has been successfully created.\n\nWe're excited to have you as a new customer. Browse our premium collection of iPhones, iPads, Samsung, and Google Pixel devices.\n\nStart shopping now and discover our latest offerings. We offer the best prices and authentic products.\n\nIf you have any questions, feel free to reach out to us.\n\nHappy shopping!\n\nBest regards,\nThe PaulTech Store Team`;
+  const html = `<div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;"><h2 style="color: #1e40af;">Welcome to PaulTech Store!</h2><p>Hi ${escapeHtml(name)},</p><p>Your account has been successfully created. We're excited to have you as a new customer.</p><p>Browse our premium collection of:</p><ul><li>iPhones</li><li>iPads</li><li>Samsung devices</li><li>Google Pixel phones</li></ul><p>Start shopping now and discover our latest offerings. We offer the best prices and authentic products.</p><p>If you have any questions, feel free to reach out to us.</p><p><strong>Happy shopping!</strong></p><p>Best regards,<br>The PaulTech Store Team</p></div>`;
+  return sendEmail(email, subject, text, html);
 }
