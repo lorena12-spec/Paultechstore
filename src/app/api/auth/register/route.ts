@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validation";
 import { createSession } from "@/lib/auth";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -11,6 +12,8 @@ export async function POST(req: Request) {
     if (exists) return NextResponse.json({ error: "Email already registered" }, { status: 409 });
     const user = await db.user.create({ data: { name: data.name, email: data.email.toLowerCase(), phone: data.phone, passwordHash: await bcrypt.hash(data.password, 12) } });
     await createSession({ id: user.id, name: user.name, email: user.email, role: user.role });
+    // Send welcome email asynchronously (fire and forget)
+    sendWelcomeEmail(user.name, user.email).catch(error => console.error("Welcome email failed:", error));
     return NextResponse.json({ ok: true, session: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch { return NextResponse.json({ error: "Invalid registration data" }, { status: 400 }); }
 }
