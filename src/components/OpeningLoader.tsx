@@ -12,9 +12,11 @@ export default function OpeningLoader({ children }: { children: React.ReactNode 
     return () => window.clearTimeout(timer);
   }, []);
 
-  if (loading && pathname !== "/products") {
-    return (
-      <div className="flex min-h-[100vh] items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(125,211,252,0.25),_transparent_30%),linear-gradient(135deg,_#020817_0%,_#0f172a_32%,_#1d4ed8_100%)] text-white">
+  return (
+    <>
+      {children}
+      {loading && pathname !== "/products" && (
+      <div aria-hidden="true" className="fixed inset-0 z-[100] flex min-h-[100vh] items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(125,211,252,0.25),_transparent_30%),linear-gradient(135deg,_#020817_0%,_#0f172a_32%,_#1d4ed8_100%)] text-white">
         <div className="relative flex flex-col items-center justify-center">
           <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(96,165,250,0.18),_transparent_50%)]" />
           <div className="absolute h-72 w-72 rounded-full bg-blue-400/10 blur-3xl" />
@@ -38,8 +40,7 @@ export default function OpeningLoader({ children }: { children: React.ReactNode 
           </div>
         </div>
       </div>
-    );
-  }
-
-  return <>{children}</>;
+      )}
+    </>
+  );
 }
