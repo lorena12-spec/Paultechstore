@@ -10,7 +10,9 @@ const displayFont = Space_Grotesk({ subsets: ["latin"], variable: "--font-displa
 
 export const metadata = {
   title: "PaulTech Store | iPhones, Samsung, Pixel & iPads",
-  description: "Shop smartphones and tablets from PaulTech Store."
+  description: "Shop smartphones and tablets from PaulTech Store.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://paultechstores.com.ng"),
+  alternates: { canonical: "/" }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

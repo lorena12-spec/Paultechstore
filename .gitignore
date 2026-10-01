@@ -6,3 +6,6 @@ prisma/*.db
 prisma/*.db-journal
 dist
 .DS_Store
+
+# Local Netlify folder
+.netlify

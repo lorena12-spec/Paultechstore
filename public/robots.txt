@@ -1,2 +1,14 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /account/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /login/
+Disallow: /register/
+Disallow: /forgot-password/
+Disallow: /reset-password/
+Disallow: /order-success/
+Disallow: /api/
+
+Sitemap: https://paultechstores.com.ng/sitemap.xml

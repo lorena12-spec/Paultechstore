@@ -1,8 +1,36 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About PaulTech | Meet the CEO & Founder",
-  description: "Learn more about PaulTech, our mission, our products, and CEO & Founder Paul Chikamso."
+  title: "Paul Chikamso | Owner, CEO & Founder of PaulTech Store",
+  description: "Meet Paul Chikamso, owner, CEO, and founder of PaulTech Store, and CEO of ICT Foundations. Learn about his work in technology, programming, and business.",
+  alternates: { canonical: "/about" }
+};
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://paultechstores.com.ng";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "PaulTech Store",
+      url: siteUrl,
+      founder: { "@id": `${siteUrl}/about#paul-chikamso` },
+      ceo: { "@id": `${siteUrl}/about#paul-chikamso` }
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/about#paul-chikamso`,
+      name: "Paul Chikamso",
+      url: `${siteUrl}/about`,
+      image: `${siteUrl}/images/paul-chikamso-ceo.jpeg`,
+      jobTitle: "Owner, CEO & Founder of PaulTech Store; CEO of ICT Foundations (ICTF)",
+      worksFor: { "@id": `${siteUrl}/#organization` },
+      description: "Paul Chikamso is the owner, CEO, and founder of PaulTech Store. He is a forex trader, computer programmer, networker, and technology entrepreneur with a passion for technology and business.",
+      knowsAbout: ["Technology", "Computer programming", "Forex trading", "Networking", "Business"]
+    }
+  ]
 };
 
 const offerings = [
@@ -40,6 +68,10 @@ const storyCards = [
 export default function AboutPage() {
   return (
     <main className="container py-12 md:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+      />
       <section className="rounded-[30px] border border-slate-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
         <div className="grid items-center gap-8 p-6 md:p-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative">
@@ -58,12 +90,11 @@ export default function AboutPage() {
 
           <div className="relative" style={{ animation: "fade-in-up 0.7s ease-out" }}>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">ABOUT PAULTECH</p>
-            <h1 className="mt-3 text-3xl font-black text-slate-900 md:text-5xl">Meet the CEO & Founder</h1>
+            <h1 className="mt-3 text-3xl font-black text-slate-900 md:text-5xl">Paul Chikamso, CEO &amp; Founder</h1>
 
             <div className="mt-6">
-              <h2 className="text-2xl font-black text-blue-700 md:text-3xl">Paul Chikamso</h2>
               <p className="mt-2 text-base font-semibold text-slate-700 md:text-lg">
-                CEO & Founder — PaulTech
+                Owner, CEO & Founder — PaulTech Store
               </p>
               <p className="mt-1 text-base text-slate-600">CEO — ICT Foundations (ICTF)</p>
             </div>

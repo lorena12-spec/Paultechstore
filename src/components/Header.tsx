@@ -150,7 +150,10 @@ export default function Header() {
               </div>
             </details>
             {!loading && session ? (
-              <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-blue-50 hover:text-blue-700">Account</Link>
+              <>
+                <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-blue-50 hover:text-blue-700">Account</Link>
+                <button type="button" onClick={() => { setMobileMenuOpen(false); void logout(); }} disabled={loggingOut} className="rounded-lg px-3 py-3 text-left font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50">{loggingOut ? "Logging out..." : "Log out"}</button>
+              </>
             ) : !loading ? (
               <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="rounded-lg bg-blue-600 px-3 py-3 font-bold text-white hover:bg-blue-700">Login / Sign in</Link>
             ) : null}

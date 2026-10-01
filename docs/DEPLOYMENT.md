@@ -1,7 +1,7 @@
 # Deployment checklist
 
 - Set `DATABASE_URL` to a managed PostgreSQL database. Netlify hosts the application, but the database must be external and durable.
-- Set `NEXT_PUBLIC_SITE_URL` to the deployed Netlify HTTPS URL or custom domain.
+- Set `NEXT_PUBLIC_SITE_URL` to `https://paultechstores.com.ng` in the Netlify production environment.
 - Set a strong AUTH_SECRET.
 - Set HTTPS and secure cookies.
 - Configure Paystack keys only on the server.
